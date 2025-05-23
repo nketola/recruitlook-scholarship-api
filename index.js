@@ -1,3 +1,11 @@
+import express from 'express';
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.get('/scholarships', async (req, res) => {
   const { keyword = '', limit = '10' } = req.query;
 
@@ -22,3 +30,6 @@ app.get('/scholarships', async (req, res) => {
   }
 });
 
+app.listen(PORT, () => {
+  console.log(`Scholarship API running on port ${PORT}`);
+});
