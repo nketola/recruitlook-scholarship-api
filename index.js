@@ -16,4 +16,28 @@ app.get('/scholarships', async (req, res) => {
     return res.status(500).json({ error: 'Missing API credentials' });
   }
 
-  const
+  const url = `https://api.careeronestop.org/v1/scholarshipfinder/${AGENCY_ID}/${encodeURIComponent(keyword)}/${state}/${limit}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`CareerOneStop API Error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Scholarship API Error:', err);
+    res.status(500).json({ error: 'Failed to fetch scholarships' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Scholarship API running on port ${PORT}`);
+});
